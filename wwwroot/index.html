@@ -1,34 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>.NET SQL CI/CD Demo</title>
-    <style>
-        body { font-family: Arial; margin: 40px; }
-        input, button { padding: 6px; margin: 5px; }
-        table { border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #333; padding: 8px; }
-    </style>
-</head>
-<body>
-
-<h2>Add User</h2>
-
-<input id="name" placeholder="Name">
-<input id="email" placeholder="Email">
-<br>
-<button onclick="addUser()">Add User</button>
-<button onclick="loadUsers()">Load Users</button>
-
-<h2>Users</h2>
-<table>
-    <thead>
-        <tr><th>ID</th><th>Name</th><th>Email</th></tr>
-    </thead>
-    <tbody id="users"></tbody>
-</table>
-
-<script>
-const api = "/api/users";
+const api = "/api/employees";
 
 function addUser() {
     fetch(api, {
@@ -56,11 +26,9 @@ function loadUsers() {
                     <td>${u.id}</td>
                     <td>${u.name}</td>
                     <td>${u.email}</td>
+                    <td>${u.department || ''}</td>
+                    <td>${u.salary || ''}</td>
                 </tr>`;
             });
         });
 }
-</script>
-
-</body>
-</html>
