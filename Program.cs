@@ -1,15 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
-builder.Services.AddControllers();  // <-- This line was missing
+// Connection string from appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Register DbContext with SQL Server provider
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Serve static files from wwwroot (your index.html)
-app.UseDefaultFiles();  // serves index.html automatically
-app.UseStaticFiles();
+// Auto-create DB and tables
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated();
+}
 
-// Map controller routes
 app.MapControllers();
 
 app.Run();
