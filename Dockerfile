@@ -1,25 +1,12 @@
-# Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-
-# Copy all files (includes wwwroot)
 COPY . .
-
-# Restore NuGet packages
 RUN dotnet restore
-
-# Publish app to /app (Release mode)
 RUN dotnet publish -c Release -o /app
 
-# Stage 2: Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-
-# Copy published files from build stage
 COPY --from=build /app .
-
-# Expose port
+ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
-
-# Run the application
 ENTRYPOINT ["dotnet", "dotnet-sql-cicd.dll"]
