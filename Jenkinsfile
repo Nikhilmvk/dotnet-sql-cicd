@@ -3,9 +3,10 @@ pipeline {
 
     stages {
 
-        stage('Clone Repo') {
+        stage('Checkout Code') {
             steps {
-                git 'https://github.com/Nikhilmvk/dotnet-sql-cicd.git'
+                git branch: 'main',
+                    url: 'https://github.com/Nikhilmvk/dotnet-sql-cicd.git'
             }
         }
 
@@ -20,6 +21,7 @@ pipeline {
                 sh '''
                 docker stop dotnet-api || true
                 docker rm dotnet-api || true
+
                 docker run -d \
                   -p 5000:8080 \
                   --name dotnet-api \
