@@ -5,7 +5,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/YOUR_USERNAME/dotnet-sql-cicd.git'
+                git 'https://github.com/Nikhilmvk/dotnet-sql-cicd.git'
             }
         }
 
