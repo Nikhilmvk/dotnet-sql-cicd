@@ -16,20 +16,39 @@ namespace SimpleDotNetSqlApi.Controllers
             _context = context;
         }
 
-        // GET: /api/employees
+        // GET: http://<ip>:5000/api/employees
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<IActionResult> GetEmployees()
         {
-            return await _context.Employees.ToListAsync();
+            try
+            {
+                var employees = await _context.Employees.ToListAsync();
+                return Ok(employees);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException?.Message ?? ex.Message);
+            }
         }
 
-        // POST: /api/employees
+        // POST: http://<ip>:5000/api/employees
         [HttpPost]
-        public async Task<ActionResult<Employee>> AddEmployee(Employee employee)
+        public async Task<IActionResult> AddEmployee([FromBody] Employee employee)
         {
-            _context.Employees.Add(employee);
-            await _context.SaveChangesAsync();
-            return Ok("Employee added successfully!");
+            if (employee == null)
+                return BadRequest("Employee data is required");
+
+            try
+            {
+                _context.Employees.Add(employee);
+                await _context.SaveChangesAsync();
+                return Ok("Employee added successfully!");
+            }
+            catch (Exception ex)
+            {
+                // This will show SQL errors clearly
+                return StatusCode(500, ex.InnerException?.Message ?? ex.Message);
+            }
         }
     }
 }
