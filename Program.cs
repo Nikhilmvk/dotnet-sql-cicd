@@ -1,18 +1,16 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll",
-        policy => policy.AllowAnyOrigin()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod());
-});
-
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+// Serve static files from wwwroot
 app.UseStaticFiles();
+
+// Map controllers
 app.MapControllers();
+
+// Optional: serve index.html as default
+app.MapFallbackToFile("index.html");
 
 app.Run();
