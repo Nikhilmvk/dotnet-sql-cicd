@@ -1,12 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using YourProjectNamespace.Models;
+using SimpleDotNetSqlApi.Models;
 
-namespace YourProjectNamespace.Data
+namespace SimpleDotNetSqlApi.Data
 {
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
-        public DbSet<User> Users => Set<User>();
+        public DbSet<Employee> Employees { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>().ToTable("Employees"); // Map to your existing table
+        }
     }
 }
