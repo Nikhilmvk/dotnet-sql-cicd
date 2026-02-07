@@ -1,25 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using SimpleDotNetSqlApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connection string from appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// Register DbContext with SQL Server provider
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Auto-create DB and tables
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
-}
-
+app.UseStaticFiles();
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 app.Run();
