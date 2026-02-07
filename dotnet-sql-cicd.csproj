@@ -13,7 +13,7 @@
     <!-- EF Core tools for migrations (optional but recommended) -->
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
 
-    <!-- SQL Client -->
+    <!-- SQL Server driver -->
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
   </ItemGroup>
 
